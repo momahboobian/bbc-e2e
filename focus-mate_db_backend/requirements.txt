@@ -1,0 +1,5 @@
+flask
+gunicorn
+python-dateutil
+flask_cors
+dateutil
