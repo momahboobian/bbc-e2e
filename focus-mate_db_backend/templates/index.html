@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BBC FocusMate matches</title>
+  <style>
+    h1 {
+      text-align: center;
+      color: purple;
+    }
+    .match-img {
+      width: 80px;
+      height: 80px;
+    }
+    .matches-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+    .row:nth-child(even) {
+      background-color: #f0f0f0;
+    }
+    .person-container {
+      display: flex;
+      align-items: start;
+      flex-basis: calc(50% - 10px);
+    }
+    .info-container {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Profile</h1>
+  <div class="main-person-container">
+    <img src="{{ main_person['photo'] }}" alt="photo" class="match-img">
+    <div class="info-container">
+      <p>Name: {{ main_person['name'] }}</p>
+      <p>Gender: {{ main_person['gender'] }}</p>
+      <p>Profession: {{ main_person['profession'] }}</p>
+      <p>Location: {{ main_person['location'] }}</p>
+      <p>Contact: {{ main_person['contact'] }}</p>
+      <p>Education: {{ main_person['education'] }}</p>
+      <p>Interests: {{ main_person['interests'] }}</p>
+      <p>Email: {{ main_person['email'] }}</p>
+      <div class="meetings-container">
+        <p>Past Meetings:</p>
+        <ul>
+          {% for meeting in main_person['past_meetings'] %}
+            <li>{{ meeting[0] }} - {{ meeting[1] }}</li>
+          {% endfor %}
+        </ul>
+        <p>Upcoming Meetings:</p>
+        <ul>
+          {% for meeting in main_person['upcoming_meetings'] %}
+            <li>{{ meeting[0] }} - {{ meeting[1] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h1>Your Matches</h1>
+  <p>You're Semantically Matched With:</p>
+  <div class="matches-grid">
+    {% for row in matches|batch(2) %}
+    <div class="row">
+      {% for match in row %}
+      <div class="person-container">
+        <img src="{{ match['photo'] }}" alt="photo" class="match-img">
+        <div class="info-container">
+          <p>Name: {{ match['name'] }}</p>
+          <p>Gender: {{ match['gender'] }}</p>
+          <p>Profession: {{ match['profession'] }}</p>
+          <p>Location: {{ match['location'] }}</p>
+          <p>Contact: {{ match['contact'] }}</p>
+          <p>Education: {{ match['education'] }}</p>
+          <p>Interests: {{ match['interests'] }}</p>
+          <p>Email: {{ match['email'] }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
