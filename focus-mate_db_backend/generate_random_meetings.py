@@ -1,43 +1,41 @@
-import numpy as np
-from scipy.spatial import distance
-from transformers import AutoModel, AutoTokenizer, pipeline
+import random
+import string
+from datetime import datetime, timedelta
 import sqlite3
 
-# Load the model and tokenizer
-model_name = 'bert-base-uncased'
-model = AutoModel.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+def generate_meeting_link():
+    def random_segment(length):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
+    
+    return f"https://meet.google.com/{random_segment(3)}-{random_segment(4)}-{random_segment(3)}"
 
-# Create a pipeline
-feature_extractor = pipeline(
-    'feature-extraction', model=model, tokenizer=tokenizer)
+def add_random_meetings(conn_, n, days_in_past=365, days_in_future=365):
+    c = conn_.cursor()
+    c.execute('SELECT id FROM Person')
+    ids = [row[0] for row in c.fetchall()]
 
-def get_embedding(text):
-    features = feature_extractor(text)
-    return np.mean(features[0], axis=0)
+    for _ in range(n):
+        id1, id2 = random.sample(ids, 2)
+        start_date = datetime.now() - timedelta(days=days_in_past)
+        end_date = datetime.now() + timedelta(days=days_in_future)
+        time_between_dates = end_date - start_date
+        random_number_of_days = random.randrange(time_between_dates.days)
+        meeting_date = start_date + timedelta(days=random_number_of_days)
 
-def compute_semantic_similarity(person1, person2):
-    p1_info = ' '.join([person1[4], person1[8], person1[9]])
-    p2_info = ' '.join([person2[4], person2[8], person2[9]])
-    p1_embedding = get_embedding(p1_info)
-    p2_embedding = get_embedding(p2_info)
-    return 1 - distance.cosine(p1_embedding, p2_embedding)
+        # Generate the meeting link
+        meeting_link = generate_meeting_link()
+
+        try:
+            c.execute('''
+                INSERT INTO Meetings (person1_id, person2_id, meeting_dt, meeting_link)
+                VALUES (?, ?, ?, ?)
+            ''', (id1, id2, meeting_date.strftime('%Y-%m-%d %H:%M:%S'), meeting_link))
+        except sqlite3.IntegrityError:
+            # Skip duplicate entries
+            continue
+
+    conn_.commit()
 
 conn = sqlite3.connect('person.db')
-c = conn.cursor()
-
-c.execute('SELECT * FROM Person')
-people = c.fetchall()
-
-for i in range(len(people)):
-    for j in range(i+1, len(people)):
-        person1 = people[i]
-        person2 = people[j]
-        similarity = compute_semantic_similarity(person1, person2)
-        c.execute('''
-            INSERT INTO Similarities (person1_id, person2_id, similarity)
-            VALUES (?, ?, ?)
-        ''', (person1[0], person2[0], similarity))
-
-conn.commit()
+add_random_meetings(conn, 100)
 conn.close()
