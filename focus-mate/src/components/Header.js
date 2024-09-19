@@ -50,16 +50,6 @@ const Header = ({ person }) => {
 
       {person && (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-          <DialogTitle>
-            <IconButton
-              edge="end"
-              color="inherit"
-              onClick={handleClose}
-              sx={{ position: 'absolute', right: 8, top: 8 }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
           <DialogContent>
             <Card>
               <CardMedia component="img" height="140" image={person.photo} alt={person.name} />

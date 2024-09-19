@@ -1,43 +1,56 @@
-import React from "react";
-import { Box, Typography, Avatar, Button } from "@mui/material";
+import React from 'react'
+import { Typography, Avatar, Button, Card, CardContent, CardActions } from '@mui/material'
 
 const Person = ({ person }) => {
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Card sx={{ margin: 'auto', boxShadow: 3 }}>
       <Avatar
         alt={person.name}
         src={person.photo}
-        sx={{ width: 150, height: 150, borderRadius: "50%", marginBottom: 5 }}
+        sx={{
+          width: 150,
+          height: 150,
+          borderRadius: '50%',
+          margin: '20px auto',
+          boxShadow: 3,
+        }}
       />
-      <Typography variant="h6" align="center">
-        Age: {person.age}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Contact: {person.contact}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Education: {person.education}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Email: {person.email}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Gender: {person.gender}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Interests: {person.interests}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Location: {person.location}
-      </Typography>
-      <Typography variant="body1" align="center">
-        Profession: {person.profession}
-      </Typography>
-      <Button variant="contained" color="primary" sx={{ marginTop: 10 }}>
-        Show Matches
-      </Button>
-    </Box>
-  );
-};
+      <CardContent>
+        <Typography variant="h5" component="div" align="center" gutterBottom>
+          {person.name}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Age:</strong> {person.age}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Contact:</strong> {person.contact}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Education:</strong> {person.education}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Email:</strong> {person.email}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Gender:</strong> {person.gender}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Interests:</strong> {person.interests}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Location:</strong> {person.location}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          <strong>Profession:</strong> {person.profession}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'center', marginBottom: 2 }}>
+        <Button variant="contained" color="primary">
+          Show Matches
+        </Button>
+      </CardActions>
+    </Card>
+  )
+}
 
-export default Person;
+export default Person
