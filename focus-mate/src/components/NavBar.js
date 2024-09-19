@@ -22,7 +22,7 @@ const NavBar = ({ toggleSidebar }) => {
   }
 
   const handleSidebarToggle = () => {
-    toggleSidebar() // Call the toggleSidebar function from props to hide/show the sidebar
+    toggleSidebar()
   }
 
   return (

@@ -6,15 +6,12 @@ import {
   Button,
   Avatar,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   Card,
   CardContent,
   CardMedia,
-  IconButton,
 } from '@mui/material'
-import { Close as CloseIcon } from '@mui/icons-material'
 import Person from './Person'
 
 const Header = ({ person }) => {
