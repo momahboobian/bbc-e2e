@@ -1,53 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import Calendar from "./components/Calendar";
-import NavBar from "./components/NavBar";
-import axios from "axios";
+import React, { useState, useEffect } from 'react'
+import { Grid } from '@mui/material'
+import Header from './components/Header'
+import Sidebar from './components/Sidebar'
+import Calendar from './components/Calendar'
+import NavBar from './components/NavBar'
+import axios from 'axios'
 
-import "./App.css";
+import './App.css'
 
 const App = () => {
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [data, setData] = useState({ main_person: null, matches: [] });
-  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [showSidebar, setShowSidebar] = useState(true)
+  const [data, setData] = useState({ main_person: null, matches: [] })
+  const [selectedPerson, setSelectedPerson] = useState(null)
 
   useEffect(() => {
-    fetchPersons();
-  }, []);
+    fetchPersons()
+  }, [])
 
   const fetchPersons = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/api/persons");
-      const persons = response.data;
+      const response = await axios.get('/api/persons')
+      const persons = response.data
 
-      const mainPersonIndex = Math.floor(Math.random() * persons.length);
-      const mainPerson = persons[mainPersonIndex];
+      const mainPersonIndex = Math.floor(Math.random() * persons.length)
+      const mainPerson = persons[mainPersonIndex]
 
-      persons.splice(mainPersonIndex, 1);
+      persons.splice(mainPersonIndex, 1)
 
-      const matches = persons.filter((person) =>
-        mainPerson.matches.some((match) => match.id === person.id)
-      );
+      const matches = persons.filter(person =>
+        mainPerson.matches.some(match => match.id === person.id)
+      )
 
-      setData({ main_person: mainPerson, matches: matches });
+      setData({ main_person: mainPerson, matches: matches })
     } catch (error) {
-      console.log("An error occurred while fetching data:", error);
+      console.log('An error occurred while fetching data:', error)
     }
-  };
+  }
 
   const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+    setShowSidebar(!showSidebar)
+  }
 
-  const handleSelect = (person) => {
-    setSelectedPerson(person);
-  };
+  const handleSelect = person => {
+    setSelectedPerson(person)
+  }
 
   const handleRemove = () => {
-    setSelectedPerson(null);
-  };
+    setSelectedPerson(null)
+  }
 
   return (
     <div className="app">
@@ -56,10 +56,7 @@ const App = () => {
       <Grid container className="main">
         {showSidebar && (
           <Grid item xs={3}>
-            <Sidebar
-              toggleSidebar={toggleSidebar}
-              selectedPerson={selectedPerson}
-            />
+            <Sidebar toggleSidebar={toggleSidebar} selectedPerson={selectedPerson} />
           </Grid>
         )}
         <Grid item xs={showSidebar ? 9 : 12}>
@@ -72,7 +69,7 @@ const App = () => {
         </Grid>
       </Grid>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
