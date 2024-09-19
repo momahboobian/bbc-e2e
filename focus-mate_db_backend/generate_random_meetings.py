@@ -1,45 +1,43 @@
-import random
-import string
-from datetime import datetime, timedelta
+import numpy as np
+from scipy.spatial import distance
+from transformers import AutoModel, AutoTokenizer, pipeline
 import sqlite3
 
+# Load the model and tokenizer
+model_name = 'bert-base-uncased'
+model = AutoModel.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# Create a pipeline
+feature_extractor = pipeline(
+    'feature-extraction', model=model, tokenizer=tokenizer)
+
+def get_embedding(text):
+    features = feature_extractor(text)
+    return np.mean(features[0], axis=0)
+
+def compute_semantic_similarity(person1, person2):
+    p1_info = ' '.join([person1[4], person1[8], person1[9]])
+    p2_info = ' '.join([person2[4], person2[8], person2[9]])
+    p1_embedding = get_embedding(p1_info)
+    p2_embedding = get_embedding(p2_info)
+    return 1 - distance.cosine(p1_embedding, p2_embedding)
+
 conn = sqlite3.connect('person.db')
+c = conn.cursor()
 
+c.execute('SELECT * FROM Person')
+people = c.fetchall()
 
-def generate_random_meeting_id(length=8):
-    """Generate a random string for the meeting ID."""
-    characters = string.ascii_lowercase + string.digits
-    return ''.join(random.choice(characters) for _ in range(length))
-
-
-def add_random_meetings(conn_, n, days_in_past=365, days_in_future=365):
-    c = conn_.cursor()
-    c.execute('SELECT id FROM Person')
-    ids = [row[0] for row in c.fetchall()]
-
-    for _ in range(n):
-        # Pick two random IDs for the meeting participants
-        id1, id2 = random.sample(ids, 2)
-
-        # Generate a random date between `days_in_past` days ago and `days_in_future` days from now
-        start_date = datetime.now() - timedelta(days=days_in_past)
-        end_date = datetime.now() + timedelta(days=days_in_future)
-        time_between_dates = end_date - start_date
-        random_number_of_days = random.randrange(time_between_dates.days)
-        meeting_date = start_date + timedelta(days=random_number_of_days)
-
-        # Generate a random meeting link
-        meeting_id = generate_random_meeting_id()
-        meeting_link = f"https://meet.google.com/{meeting_id}"
-
-        # Insert the new meeting into the database
+for i in range(len(people)):
+    for j in range(i+1, len(people)):
+        person1 = people[i]
+        person2 = people[j]
+        similarity = compute_semantic_similarity(person1, person2)
         c.execute('''
-            INSERT INTO Meetings (person1_id, person2_id, meeting_dt, meeting_link)
-            VALUES (?, ?, ?, ?)
-        ''', (id1, id2, meeting_date.strftime('%Y-%m-%d %H:%M:%S'), meeting_link))
+            INSERT INTO Similarities (person1_id, person2_id, similarity)
+            VALUES (?, ?, ?)
+        ''', (person1[0], person2[0], similarity))
 
-    conn.commit()
-
-
-add_random_meetings(conn, 100)
+conn.commit()
 conn.close()

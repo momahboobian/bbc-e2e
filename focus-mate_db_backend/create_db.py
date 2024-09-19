@@ -1,12 +1,12 @@
 import random
 import sqlite3
 from faker import Faker
-from generate_random_meetings import generate_random_meeting_id  # Changed to absolute import
 
+# Connect to the database (this will create a new file if it doesn't exist)
 conn = sqlite3.connect('person.db')
-
 c = conn.cursor()
 
+# Create tables
 c.execute('''
     CREATE TABLE IF NOT EXISTS Person
     (id INTEGER PRIMARY KEY,
@@ -27,6 +27,17 @@ c.execute('''
     (person1_id INTEGER,
     person2_id INTEGER,
     similarity REAL,
+    PRIMARY KEY (person1_id, person2_id),
+    FOREIGN KEY (person1_id) REFERENCES Person(id),
+    FOREIGN KEY (person2_id) REFERENCES Person(id))
+''')
+
+c.execute('''
+    CREATE TABLE IF NOT EXISTS Meetings
+    (person1_id INTEGER,
+    person2_id INTEGER,
+    meeting_dt TEXT,
+    meeting_link TEXT,
     PRIMARY KEY (person1_id, person2_id),
     FOREIGN KEY (person1_id) REFERENCES Person(id),
     FOREIGN KEY (person2_id) REFERENCES Person(id))
@@ -55,39 +66,4 @@ for _ in range(100):
     ''', (name, gender, age, profession, location, photo, contact, education, interests, email))
 
 conn.commit()
-
-# Create the Meetings table
-c.execute('''
-    CREATE TABLE IF NOT EXISTS Meetings
-    (person1_id INTEGER,
-    person2_id INTEGER,
-    meeting_dt TEXT,
-    meeting_link TEXT,
-    PRIMARY KEY (person1_id, person2_id),
-    FOREIGN KEY (person1_id) REFERENCES Person(id),
-    FOREIGN KEY (person2_id) REFERENCES Person(id))
-''')
-
-conn.commit()
-
-# Populate the Meetings table
-for _ in range(100):
-    person1_id = fake.random_int(min=1, max=100)
-    person2_id = fake.random_int(min=1, max=100)
-    if random.random() < 0.7:
-        # Generate a past meeting date/time
-        meeting_dt = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None).isoformat()
-    else:
-        # Generate a future meeting date/time
-        meeting_dt = fake.date_time_this_year(before_now=False, after_now=True, tzinfo=None).isoformat()
-    meeting_id = generate_random_meeting_id()
-    meeting_link = f"https://meet.google.com/{meeting_id}"
-
-    c.execute('''
-        INSERT INTO Meetings (person1_id, person2_id, meeting_dt, meeting_link)
-        VALUES (?, ?, ?, ?)
-    ''', (person1_id, person2_id, meeting_dt, meeting_link))
-
-conn.commit()
-
 conn.close()
