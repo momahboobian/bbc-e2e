@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -10,37 +10,37 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-} from "@mui/material";
-import axios from "axios";
-import Person from "./Person";
+} from '@mui/material'
+import axios from 'axios'
+import Person from './Person'
 
 const Header = ({ data }) => {
-  const [person, setPerson] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [person, setPerson] = useState(null)
+  const [open, setOpen] = useState(false)
 
-  const handleAvatarClick = (person) => {
-    setPerson(person);
-    setOpen(true);
-  };
+  const handleAvatarClick = person => {
+    setPerson(person)
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   useEffect(() => {
-    fetchRandomPerson();
-  }, []);
+    fetchRandomPerson()
+  }, [])
 
   const fetchRandomPerson = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/api/persons");
-      const persons = response.data;
-      const randomPerson = persons[Math.floor(Math.random() * persons.length)];
-      setPerson(randomPerson);
+      const response = await axios.get('/api/persons')
+      const persons = response.data
+      const randomPerson = persons[Math.floor(Math.random() * persons.length)]
+      setPerson(randomPerson)
     } catch (error) {
-      console.log("An error occurred while fetching data:", error);
+      console.log('An error occurred while fetching data:', error)
     }
-  };
+  }
 
   return (
     <div>
@@ -75,7 +75,7 @@ const Header = ({ data }) => {
         </Dialog>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
