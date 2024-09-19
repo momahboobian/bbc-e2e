@@ -22,7 +22,7 @@ const App = () => {
     try {
       // Fetching a random main person and their matches
       const randomPersonId = Math.floor(Math.random() * 100) + 1
-      const response = await axios.get(`/matches/${randomPersonId}`)
+      const response = await axios.get(`/api/matches/${randomPersonId}`)
       console.log(response.data)
       const { main_person, matches } = response.data
 
