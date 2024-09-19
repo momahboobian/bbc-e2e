@@ -45,6 +45,10 @@ def find_matches(conn, id_int):
         c.execute('SELECT * FROM Person WHERE id = ?', (match_id,))
         person = c.fetchone()
 
+        # Fetch meetings for the matched person
+        c.execute('SELECT meeting_dt, meeting_link FROM Meetings WHERE person1_id = ? OR person2_id = ? ORDER BY meeting_dt DESC', (match_id, match_id))
+        meetings = c.fetchall()
+
         match = {'id': person[0],
                  'name': person[1],
                  'gender': person[2],
@@ -56,7 +60,8 @@ def find_matches(conn, id_int):
                  'education': person[8],
                  'interests': person[9],
                  'email': person[10],
-                 'similarity': score}
+                 'similarity': score,
+                 'meetings': meetings}  # Include meetings
 
         matches.append(match)
 
@@ -83,10 +88,8 @@ def get_main_person(conn, id_int):
     meetings = c.fetchall()
 
     # Separate meetings into past and upcoming
-    past_meetings = [meeting for meeting in meetings if parse(
-        meeting[0]) < datetime.now()]
-    upcoming_meetings = [meeting for meeting in meetings if parse(
-        meeting[0]) >= datetime.now()]
+    past_meetings = [meeting for meeting in meetings if parse(meeting[0]) < datetime.now()]
+    upcoming_meetings = [meeting for meeting in meetings if parse(meeting[0]) >= datetime.now()]
 
     main_person = {'id': person[0],
                    'name': person[1],
