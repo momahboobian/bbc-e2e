@@ -15,13 +15,22 @@ import '../styles/Calendar.css'
 
 const Calendar = ({ data, selectedPerson, onSelect, onRemove }) => {
   const [hoveredPerson, setHoveredPerson] = useState(null)
-  const { matches = [] } = data // Ensure matches is an array
+  const { matches = [] } = data
+
   const today = new Date()
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
   const getDayNumber = index => {
     const day = today.getDate() + index
     return day > 31 ? day - 31 : day // Simple check for month-end
+  }
+
+  const handleSelect = person => {
+    if (selectedPerson === person) {
+      onRemove()
+    } else {
+      onSelect(person)
+    }
   }
 
   return (
@@ -72,9 +81,7 @@ const Calendar = ({ data, selectedPerson, onSelect, onRemove }) => {
                           <Button
                             variant={selectedPerson === person ? 'outlined' : 'contained'}
                             color={selectedPerson === person ? 'error' : 'primary'}
-                            onClick={() =>
-                              selectedPerson === person ? onRemove(person) : onSelect(person)
-                            }
+                            onClick={() => handleSelect(person)}
                           >
                             {selectedPerson === person ? 'Remove' : 'Select'}
                           </Button>
