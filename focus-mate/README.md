@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# Focus Mate Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend application for the Focus Mate project, providing a user interface to interact with the backend service, view user profiles, and manage meetings. The frontend is built using React and Material-UI, styled with SCSS, and integrates with the backend API to display user data and manage meetings.
 
-## Available Scripts
+<img src="public/asset/front-end.png" alt="Invoice Data Table" width="600">
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **User Profile Display**: Shows the main person’s profile in the header.
+- **Calendar View**: Displays meetings in a calendar format, with functionality to select users and view their details.
+- **Sidebar**: Shows upcoming meetings and allows interaction with selected users.
+- **Responsive Design**: Adjusts layout based on screen size to ensure a seamless user experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **React**: JavaScript library for building user interfaces.
+- **Material-UI**:: React component library for styling and UI components.
+- **Axios**: HTTP client for making API requests to the backend.
+- **ESLint and Prettier**: Tools for code quality and formatting.
 
-### `npm test`
+## Installation and Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js (version 18 or higher)
+- npm or yarn (package managers)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Clone the repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/yourusername/focus-mate_frontend.git
+cd focus-mate_frontend
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Install dependencies
 
-### `npm run eject`
+```bash
+npm install
+# or
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Run the Development Server
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+# or
+yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The application will be available at http://localhost:3000.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Build for Production
 
-## Learn More
+To create a production build of the frontend application, run:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm run build
+# or
+yarn build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The build will be located in the `build` directory.
 
-### Code Splitting
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 1. Main Person and Sidebar
 
-### Analyzing the Bundle Size
+- The Header displays the main person's profile.
+- The Sidebar shows upcoming meetings and allows interaction with selected users.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 2. Calendar Component
 
-### Making a Progressive Web App
+- Displays meetings in a calendar format.
+- Users can select a person to add them to the sidebar's upcoming meetings section.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 3. Select and Manage Users
 
-### Advanced Configuration
+- Use the Select button in the calendar to add a user to the sidebar.
+- Users can be removed from the sidebar by clicking the Remove button.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Future Improvements
 
-### Deployment
+- Enhance user interaction with more detailed profiles.
+- Implement advanced filtering and search in the calendar.
+- Add user authentication and profile management features.
+- Optimize performance and enhance accessibility features.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License. See the [LICENSE](https://chatgpt.com/c/LICENSE) file for details.
