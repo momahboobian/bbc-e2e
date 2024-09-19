@@ -1,7 +1,15 @@
 import random
+import string
 from datetime import datetime, timedelta
 import sqlite3
-conn = sqlite3.connect('person2.db')
+
+conn = sqlite3.connect('person.db')
+
+
+def generate_random_meeting_id(length=8):
+    """Generate a random string for the meeting ID."""
+    characters = string.ascii_lowercase + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
 
 
 def add_random_meetings(conn_, n, days_in_past=365, days_in_future=365):
@@ -20,8 +28,9 @@ def add_random_meetings(conn_, n, days_in_past=365, days_in_future=365):
         random_number_of_days = random.randrange(time_between_dates.days)
         meeting_date = start_date + timedelta(days=random_number_of_days)
 
-        # Generate a random meeting link (just a placeholder in this case)
-        meeting_link = f"https://bbc.zoom.com/j/{random.randint(10000, 99999)}"
+        # Generate a random meeting link
+        meeting_id = generate_random_meeting_id()
+        meeting_link = f"https://meet.google.com/{meeting_id}"
 
         # Insert the new meeting into the database
         c.execute('''

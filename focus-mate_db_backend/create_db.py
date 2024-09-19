@@ -1,14 +1,14 @@
-# Description: Creates the database and populates it with fake data
 import random
 import sqlite3
 from faker import Faker
+from generate_random_meetings import generate_random_meeting_id  # Changed to absolute import
 
-conn = sqlite3.connect('person2.db')
+conn = sqlite3.connect('person.db')
 
 c = conn.cursor()
 
 c.execute('''
-    CREATE TABLE Person
+    CREATE TABLE IF NOT EXISTS Person
     (id INTEGER PRIMARY KEY,
     name TEXT,
     gender TEXT,
@@ -23,7 +23,7 @@ c.execute('''
 ''')
 
 c.execute('''
-    CREATE TABLE Similarities
+    CREATE TABLE IF NOT EXISTS Similarities
     (person1_id INTEGER,
     person2_id INTEGER,
     similarity REAL,
@@ -34,10 +34,6 @@ c.execute('''
 
 conn.commit()
 
-
-
-
-
 fake = Faker()
 
 # Populate the Person table
@@ -47,10 +43,10 @@ for _ in range(100):
     age = fake.random_int(min=20, max=70)
     profession = fake.job()
     location = fake.city()
-    photo = fake.image_url()
+    photo = f"https://picsum.photos/seed/{random.randint(1, 1000)}/200/300"
     contact = fake.phone_number()
     education = fake.random_element(elements=('High School', 'Bachelor', 'Master', 'PhD'))
-    interests = fake.text(max_nb_chars=200)  # Arbitrary size limit
+    interests = fake.text(max_nb_chars=200)
     email = fake.email()
 
     c.execute('''
@@ -60,11 +56,9 @@ for _ in range(100):
 
 conn.commit()
 
-
-
 # Create the Meetings table
 c.execute('''
-    CREATE TABLE Meetings
+    CREATE TABLE IF NOT EXISTS Meetings
     (person1_id INTEGER,
     person2_id INTEGER,
     meeting_dt TEXT,
@@ -78,17 +72,16 @@ conn.commit()
 
 # Populate the Meetings table
 for _ in range(100):
-    person1_id = fake.random_int(min=1, max=1000)
-    person2_id = fake.random_int(min=1, max=1000)
+    person1_id = fake.random_int(min=1, max=100)
+    person2_id = fake.random_int(min=1, max=100)
     if random.random() < 0.7:
         # Generate a past meeting date/time
         meeting_dt = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None).isoformat()
     else:
         # Generate a future meeting date/time
         meeting_dt = fake.date_time_this_year(before_now=False, after_now=True, tzinfo=None).isoformat()
-    random_numbers = [random.randint(0, 9) for _ in range(10)]
-    str_numbers = ''.join(str(n) for n in random_numbers)
-    meeting_link = "https://bbc.zoom.us/j/" + str_numbers
+    meeting_id = generate_random_meeting_id()
+    meeting_link = f"https://meet.google.com/{meeting_id}"
 
     c.execute('''
         INSERT INTO Meetings (person1_id, person2_id, meeting_dt, meeting_link)

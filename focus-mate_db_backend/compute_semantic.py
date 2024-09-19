@@ -34,7 +34,7 @@ def compute_semantic_similarity(person1, person2):
     return 1 - distance.cosine(p1_embedding, p2_embedding)  # cosine similarity
 
 
-conn = sqlite3.connect('person2.db')
+conn = sqlite3.connect('person.db')
 
 c = conn.cursor()
 c.execute('SELECT * FROM Person')

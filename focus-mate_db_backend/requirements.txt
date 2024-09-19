@@ -1,5 +1,8 @@
-flask
+flask~=3.0.3
 gunicorn
-python-dateutil
+python-dateutil~=2.9.0.post0
 flask_cors
-python-dateutil
+Faker~=28.4.1
+numpy~=2.1.1
+scipy~=1.14.1
+transformers~=4.44.2
