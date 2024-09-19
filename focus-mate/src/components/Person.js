@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Avatar, Button, Card, CardContent, CardActions } from '@mui/material'
+import { Typography, Avatar, Card, CardContent } from '@mui/material'
 
 const Person = ({ person }) => {
   return (
@@ -44,11 +44,6 @@ const Person = ({ person }) => {
           <strong>Profession:</strong> {person.profession}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'center', marginBottom: 2 }}>
-        <Button variant="contained" color="primary">
-          Show Matches
-        </Button>
-      </CardActions>
     </Card>
   )
 }
