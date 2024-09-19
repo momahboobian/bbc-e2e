@@ -63,7 +63,7 @@ def find_matches(conn, id_int):
     return matches[:10]
 
 
-@app.route('/api/persons')
+@app.route('/persons')
 @cross_origin()
 def get_all_persons_api():
     conn = get_db()
@@ -134,7 +134,7 @@ def get_all_persons(conn):
     return all_persons
 
 
-@app.route('/api/matches/<int:person_id>')
+@app.route('/matches/<int:person_id>')
 @cross_origin()
 def get_matches_api(person_id):
     conn = get_db()
