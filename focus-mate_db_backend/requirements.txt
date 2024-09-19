@@ -1,8 +1,9 @@
-flask~=3.0.3
-gunicorn
-python-dateutil~=2.9.0.post0
-flask_cors
-Faker~=28.4.1
-numpy~=2.1.1
-scipy~=1.14.1
-transformers~=4.44.2
+Faker==28.4.1
+Flask==3.0.3
+Flask-Cors==5.0.0
+gunicorn==23.0.0
+huggingface-hub==0.25.0
+numpy==2.1.1
+python-dateutil==2.9.0.post0
+scipy==1.14.1
+transformers==4.44.2
